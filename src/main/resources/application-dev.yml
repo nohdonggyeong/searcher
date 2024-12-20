@@ -1,0 +1,40 @@
+# port
+server:
+  port: 8082
+
+# slf4j
+logging:
+  level:
+    root: INFO
+
+spring:
+  # h2
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+  h2:
+    console:
+      enabled: true
+
+# opensearch
+opensearch:
+  ssl:
+    trust-store: /Users/donggyeong/develop/now/opensearch/files/cert/files/opensearch-truststore # /full/path/to/keystore
+    trust-store-password: ENC(Qrr+3QFSYLCHrmkJ+9mQmJAHPNZPCtXGOTv9G95gTQI=)  # password-to-keystore
+  host: localhost
+  port: 9200
+  scheme: https
+  username: admin
+  password: ENC(U382/u6ngbs9A5TFOSeqAI80a1rIWi0hXh309CnGAg4=)
+
+# jasypt
+jasypt:
+  encryptor:
+    algorithm: PBEWithMD5AndDES
+    password: JasyptPassword12#
