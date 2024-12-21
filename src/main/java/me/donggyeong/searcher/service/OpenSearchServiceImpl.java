@@ -37,7 +37,7 @@ public class OpenSearchServiceImpl implements OpenSearchService {
 
 	private static final String KEY_TOTAL_COUNT = "total_count";
 	private static final String KEY_CATEGORY_COUNTS = "category_counts";
-	
+
 	private static final String COUNT_BY_ID = "_id";
 	private static final String SORT_BY_COUNT = "_count";
 	private static final String SORT_BY_KEY = "_key";
