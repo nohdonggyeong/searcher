@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import lombok.RequiredArgsConstructor;
+import me.donggyeong.searcher.dto.SearchHitsResponse;
 import me.donggyeong.searcher.enums.ErrorCode;
 import me.donggyeong.searcher.exception.CustomException;
 
@@ -30,14 +31,12 @@ public class OpenSearchServiceImpl implements OpenSearchService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Map<String, Object>> search(String target, String query, Integer from, Integer size) {
+	public SearchHitsResponse search(String target, String query, Integer from, Integer size) {
 		if (StringUtils.isEmpty(target)) {
 			throw new CustomException(ErrorCode.INVALID_TARGET);
 		}
 
 		try {
-			List<Map<String, Object>> responseList = new ArrayList<>();
-
 			SearchRequest searchRequest;
 			if (StringUtils.isEmpty(query)) {
 				searchRequest = new SearchRequest.Builder()
@@ -57,14 +56,14 @@ public class OpenSearchServiceImpl implements OpenSearchService {
 					.size(size)
 					.build();
 			}
-
 			SearchResponse<ObjectNode> searchResponse = openSearchClient.search(searchRequest, ObjectNode.class);
 
+			List<Map<String, Object>> documents = new ArrayList<>();
 			for (Hit<ObjectNode> hit : searchResponse.hits().hits()) {
-				responseList.add(objectMapper.convertValue(hit.source(), Map.class));
+				documents.add(objectMapper.convertValue(hit.source(), Map.class));
 			}
-			return responseList;
 
+			return new SearchHitsResponse(searchResponse.hits().total().value(), from, size, documents);
 		} catch (Exception e) {
 			throw new CustomException(ErrorCode.OPENSEARCH_SEARCH_OPERATION_FAILED);
 		}
