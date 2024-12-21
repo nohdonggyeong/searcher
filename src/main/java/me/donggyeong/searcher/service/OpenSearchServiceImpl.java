@@ -20,15 +20,9 @@ import lombok.RequiredArgsConstructor;
 import me.donggyeong.searcher.enums.ErrorCode;
 import me.donggyeong.searcher.exception.CustomException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 @Service
 @RequiredArgsConstructor
 public class OpenSearchServiceImpl implements OpenSearchService {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(OpenSearchServiceImpl.class);
-
 	private final OpenSearchClient openSearchClient;
 	private final ObjectMapper objectMapper;
 
@@ -72,7 +66,6 @@ public class OpenSearchServiceImpl implements OpenSearchService {
 			return responseList;
 
 		} catch (Exception e) {
-			LOGGER.error("Error during OpenSearch operation", e);
 			throw new CustomException(ErrorCode.OPENSEARCH_SEARCH_OPERATION_FAILED);
 		}
 	}
